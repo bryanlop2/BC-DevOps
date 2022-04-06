@@ -1,0 +1,12 @@
+1.- cd C:\Program Files\Oracle\VirtualBox
+2.- VBoxManage.exe
+
+3.- VBoxManage createvm --name OracleLinux6Test --ostype Oracle_64 --register
+4.- VBoxManage startvm OracleLinux6Test
+5.- VBoxManage unregistervm –delete OracleLinux6Test
+
+
+*EXTRA*
+
+VBoxManage list vms  (List all the virtual Machines)
+VBoxManage list runningvms (List the running Virtual Machines)
