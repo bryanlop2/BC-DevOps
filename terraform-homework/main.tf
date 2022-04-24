@@ -1,21 +1,33 @@
-terraform {
+terraform {                                                main.tf                                                            terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.5.0"
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "2.16.0"
     }
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
+provider "docker" {
 }
 
-resource "aws_budgets_budget" "new-test" {
-  name              = "monthly-budget"
-  budget_type       = "COST"
-  limit_amount      = "500.0"
-  limit_unit        = "USD"
-  time_unit         = "MONTHLY"
-  time_period_start = "2022-04-01_00:01"
+# Pulls the image
+resource "docker_image" "nginx" {
+  name         = "nginx:latest"
+  keep_locally = true
+}
+
+# Create a container
+resource "docker_container" "nginx-server" {
+  image = docker_image.nginx.latest
+  name  = "nginx-server"
+  ports {
+     internal = 80
+  }
+
+  volumes {
+    container_path = "/usr/share/nginx/html"
+    host_path      =  "/data/"
+    read_only      =  true
+  }
+
 }
